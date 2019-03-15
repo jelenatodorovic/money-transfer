@@ -60,15 +60,20 @@ public class TransferServiceImpl implements TransferService {
      */
     @Override
     public void finishTransfer(Transfer transfer) throws AppException {
-        boolean deposited = accountService.deposit(transfer.getToId(), transfer.getAmount());
-        if (deposited) {
-            //finish success
-            transferDAO.updateTransfer(transfer.getId(), TransferStatus.FINISHED);
+        Transfer transfer1 = transferDAO.getTransfer(transfer.getId());
+        if(transfer1 != null) {
+            boolean deposited = accountService.deposit(transfer.getToId(), transfer1.getAmount());
+            if (deposited) {
+                //finish success
+                transferDAO.updateTransfer(transfer.getId(), TransferStatus.FINISHED);
+            } else {
+                //finish failed
+                transferDAO.updateTransfer(transfer.getId(), TransferStatus.FAILED);
+                //return amount
+                accountService.deposit(transfer.getFromId(), transfer1.getAmount());
+            }
         } else {
-            //finish failed
-            transferDAO.updateTransfer(transfer.getId(), TransferStatus.FAILED);
-            //return amount
-            accountService.deposit(transfer.getFromId(), transfer.getAmount());
+            throw new AppException("Transfer is null");
         }
     }
 }
