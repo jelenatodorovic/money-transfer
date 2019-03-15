@@ -1,17 +1,17 @@
 # REST API Money-Transfer
 
-<h1>Run application</h1>
+<h2>Run application</h2>
 mvn package exec:exec@run-app
 
-<h1>Tech stack</h1>
+<h2>Tech stack</h2>
 Java 8
 Vertx
 H2 Database (in-memory)
 Maven
 
-<h1>Payment flow</h1>
+<h2>Payment flow</h2>
 
-<h1>End points</h1>
+<h2>End points</h2>
 
 GET/accounts - Get all accounts
 
