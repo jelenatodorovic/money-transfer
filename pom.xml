@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <!-- the main class -->
         <exec.mainClass>MoneyTransfer</exec.mainClass>
     </properties>
 
@@ -40,48 +39,125 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.4</version>
         </dependency>
-       <!-- <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>4.2.2</version>
         </dependency>
+      <!--  <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>-->
+ <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>3.3.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>2.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
         <!-- <dependency>
-             <groupId>org.datanucleus</groupId>
-             <artifactId>datanucleus-core</artifactId>
-             <version>5.1.12</version>
-         </dependency>
-         <dependency>
-             <groupId>org.datanucleus</groupId>
-             <artifactId>datanucleus-api-jdo</artifactId>
-             <version>5.1.9</version>
-         </dependency>
-         <dependency>
-             <groupId>org.datanucleus</groupId>
-             <artifactId>javax.jdo</artifactId>
-             <version>3.2.0-m6</version>
-         </dependency>
-        -->
-
-
+             <groupId>com.fasterxml.jackson.core</groupId>
+             <artifactId>jackson-core</artifactId>
+             <version>2.9.8</version>
+             <scope>test</scope>
+         </dependency>-->
     </dependencies>
     <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.4</version>
+                <version>3.3</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
+			  <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <configuration>
+                    <tasks>
+                        <sleep seconds="5" />
+                    </tasks>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-vertx-app</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="${java.home}/bin/java"
+                                      dir="${project.build.directory}"
+                                      spawn="true">
+                                    <arg value="-jar"/>
+                                    <arg value="${project.artifactId}-${project.version}-fat.jar"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-vertx-app</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="wmic"
+                                      dir="${project.build.directory}"
+                                      spawn="false">
+                                    <arg value="process"/>
+                                    <arg value="where"/>
+                                    <arg value="CommandLine like '%${project.artifactId}%' and not name='wmic.exe'"/>
+                                    <arg value="delete"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -97,13 +173,14 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>${exec.mainClass}</Main-Class>
+                                        <Main-Class>io.vertx.core.Launcher</Main-Class>
+                                        <Main-Verticle>${exec.mainClass}</Main-Verticle>
                                     </manifestEntries>
                                 </transformer>
-                                <transformer
+                         <!--       <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                     <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
-                                </transformer>
+                                </transformer>-->
                             </transformers>
                             <artifactSet>
                             </artifactSet>
@@ -135,6 +212,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+          
         </plugins>
     </build>
 </project>
