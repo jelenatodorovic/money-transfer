@@ -41,7 +41,7 @@ Request example: <br/>
 	"name": "Ana",
 	"balance":"500.00",
 	"currency":"EUR"
-}
+} <br/>
 Response example: <br/>
 {
     "id": 1,
@@ -70,7 +70,7 @@ Request example:
 	"toId": 2,
 	"amount":50,
 	"transferStatus":"CREATED"
-}
+} <br/>
 Response example:
 {
     "id": 1,
