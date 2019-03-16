@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface AccountDAO {
 
-    public List<Account> getAllAccounts() throws AppException;
+    List<Account> getAllAccounts() throws AppException;
 
-    public int createAccount(Account account) throws AppException;
+    int createAccount(Account account) throws AppException;
 
-    public Account getAccount(int id) throws AppException;
+    Account getAccount(int id) throws AppException;
 
-    public int updateAccount(int id, BigDecimal newBalance) throws AppException;
+    int updateAccount(int id, BigDecimal newBalance) throws AppException;
 }

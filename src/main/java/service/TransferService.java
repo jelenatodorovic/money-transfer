@@ -7,7 +7,7 @@ import model.Transfer;
 
 public interface TransferService {
 
-    public Transfer createTransfer(Transfer transfer) throws AccountNotFoundException, NotEnoughAccountBalanceException, AppException;
+    Transfer createTransfer(Transfer transfer) throws AccountNotFoundException, NotEnoughAccountBalanceException, AppException;
 
-    public void finishTransfer(Transfer transfer) throws AppException;
+    void finishTransfer(Transfer transfer) throws AccountNotFoundException, AppException;
 }

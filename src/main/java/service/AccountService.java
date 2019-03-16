@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public interface AccountService {
 
-    public boolean withdraw(int accountId, BigDecimal amount) throws AccountNotFoundException,NotEnoughAccountBalanceException;
+    boolean withdraw(int accountId, BigDecimal amount) throws AccountNotFoundException, NotEnoughAccountBalanceException;
 
-    public boolean deposit(int accountId, BigDecimal amount);
+    boolean deposit(int accountId, BigDecimal amount) throws AccountNotFoundException;
 }

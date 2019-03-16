@@ -35,10 +35,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean deposit(int accountId, BigDecimal amount) {
+    public boolean deposit(int accountId, BigDecimal amount) throws AccountNotFoundException {
         Account account = null;
         try {
             account = accountDAO.getAccount(accountId);
+            if(account == null) {
+                throw new AccountNotFoundException("Account was not found for account id: " + accountId);
+            }
             account.deposit(amount);
             int updated = accountDAO.updateAccount(accountId, account.getBalance());
             return updated == 1;

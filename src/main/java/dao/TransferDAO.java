@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface TransferDAO {
 
-    public List<Transfer> getAllTransfers() throws AppException;
+    List<Transfer> getAllTransfers() throws AppException;
 
-    public Transfer getTransfer(int id) throws AppException;
+    Transfer getTransfer(int id) throws AppException;
 
-    public int createTransfer(Transfer transfer) throws AppException;
+    int createTransfer(Transfer transfer) throws AppException;
 
-    public int updateTransfer(int id, TransferStatus transferStatus) throws AppException;
+    int updateTransfer(int id, TransferStatus transferStatus) throws AppException;
 }

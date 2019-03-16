@@ -59,7 +59,7 @@ public class TransferServiceImpl implements TransferService {
      * @throws AppException
      */
     @Override
-    public void finishTransfer(Transfer transfer) throws AppException {
+    public void finishTransfer(Transfer transfer) throws AccountNotFoundException, AppException {
         Transfer transfer1 = transferDAO.getTransfer(transfer.getId());
         if(transfer1 != null) {
             boolean deposited = accountService.deposit(transfer.getToId(), transfer1.getAmount());
