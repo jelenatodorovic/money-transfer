@@ -243,7 +243,7 @@ public class MoneyTransfer extends AbstractVerticle {
         } catch (AppException e) {
             routingContext.response().setStatusCode(500)
                     .putHeader("content-type", contentType)
-                    .end(Json.encodePrettily(new ErrorResponse(500, "Could not update transfer")));
+                    .end(Json.encodePrettily(new ErrorResponse(500, "Could not update transfer. " + e.getMessage())));
         } catch (AccountNotFoundException ant) {
             routingContext.response().setStatusCode(500)
                     .putHeader("content-type", contentType)

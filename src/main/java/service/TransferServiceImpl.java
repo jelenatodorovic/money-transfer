@@ -61,7 +61,13 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public void finishTransfer(Transfer transfer) throws AccountNotFoundException, AppException {
         Transfer transfer1 = transferDAO.getTransfer(transfer.getId());
-        if(transfer1 != null) {
+        if(transfer1 == null){
+            throw new AppException("Transfer doesn't exists.");
+        } else if(transfer1.getTransferStatus() == TransferStatus.FINISHED
+                || transfer1.getTransferStatus() == TransferStatus.FAILED) {
+            throw new AppException("Transfer already finished.");
+        }
+        else {
             boolean deposited = accountService.deposit(transfer.getToId(), transfer1.getAmount());
             if (deposited) {
                 //finish success
@@ -72,8 +78,6 @@ public class TransferServiceImpl implements TransferService {
                 //return amount
                 accountService.deposit(transfer.getFromId(), transfer1.getAmount());
             }
-        } else {
-            throw new AppException("Transfer is null");
         }
     }
 }
