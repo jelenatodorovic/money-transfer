@@ -3,21 +3,25 @@
 <h2>Run application</h2>
 mvn package exec:exec@run-app
 
-<2>Run tests</h2>
+<h2>Run tests</h2>
 1. Run application: mvn package exec:exec@run-app <br/>
 2. Run tests: mvn verify <br/>
 
 <h2>Tech stack</h2>
-Java 8<br/>
-Vertx<br/>
-H2 Database (in-memory)<br/>
-Maven
+<ul>
+	<li>Java 8</li>
+	<li>Vertx</li>
+	<li>H2 Database (in-memory)</li>
+	<li>Maven</li>
+</ul
 
 <h2>Transfer flow</h2>
-1. Create transfer
-2. Reserve amount on account transfering from
-3. Deposit money on account transfering to
-4. Finish transfer
+<ol>
+	<li>Create transfer</li>
+	<li>Reserve amount on account transfering from</li>
+	<li>Deposit money on account transfering to</li>
+	<li>Finish transfer</li>
+</ol>
 
 Cases: <br/>
 Step 1. If accounts doesn't exist transfer will not be created. <br/>
@@ -27,18 +31,17 @@ Step 3. If deposit money on account transfering to failed, return reserved money
 
 <h2>End points</h2>
 
-GET/accounts - Get all accounts
+=== GET/accounts - Get all accounts
 
-GET/accounts/{id} - Get account with id
+=== GET/accounts/{id} - Get account with id
 
-POST/accounts - Create new account<br/>
+=== POST/accounts - Create new account<br/>
 Request example: <br/>
 {
 	"name": "Ana",
 	"balance":"500.00",
 	"currency":"EUR"
 }
-
 Response example: <br/>
 {
     "id": 1,
@@ -47,7 +50,7 @@ Response example: <br/>
     "currency": "EUR"
 }
 
-PUT/accounts - Update balance on the account <br/>
+=== PUT/accounts - Update balance on the account <br/>
 Request/Response example: <br/>
 {
     "id": 1,
@@ -56,11 +59,11 @@ Request/Response example: <br/>
     "currency": "EUR"
 }
 
-GET/transfers - Get all transfers
+=== GET/transfers - Get all transfers
 
-GET/transfers/{id} - Get transfer with id
+=== GET/transfers/{id} - Get transfer with id
 
-POST/transfers - Create new transfer<br/>
+=== POST/transfers - Create new transfer<br/>
 Request example:
 {
 	"fromId": 1,
@@ -68,7 +71,6 @@ Request example:
 	"amount":50,
 	"transferStatus":"CREATED"
 }
-
 Response example:
 {
     "id": 1,
