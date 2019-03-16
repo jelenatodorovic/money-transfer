@@ -1,6 +1,7 @@
 package service;
 
 import com.google.inject.Inject;
+import dao.AccountDAO;
 import dao.TransferDAO;
 import exception.AccountNotFoundException;
 import exception.AppException;
@@ -32,6 +33,8 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public Transfer createTransfer(Transfer transfer) throws AccountNotFoundException, NotEnoughAccountBalanceException {
         try {
+            accountService.getAccount(transfer.getFromId());
+            accountService.getAccount(transfer.getToId());
             int id = transferDAO.createTransfer(transfer);
             transfer.setId(id);
             boolean withdrawn = accountService.withdraw(transfer.getFromId(), transfer.getAmount());

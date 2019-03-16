@@ -14,6 +14,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import model.Account;
+import model.ErrorResponse;
 import model.Transfer;
 import model.TransferStatus;
 import service.AccountService;
@@ -91,14 +92,11 @@ public class MoneyTransfer extends AbstractVerticle {
         try {
             String id = routingContext.request().getParam("id");
             Integer idAsInt = Integer.valueOf(id);
-            Account account = accountDAO.getAccount(idAsInt);
-            if (account == null) {
-                routingContext.response().setStatusCode(204).end("No content");
-            } else {
-                routingContext.response().setStatusCode(201)
-                        .putHeader("content-type", contentType)
-                        .end(Json.encodePrettily(account));
-            }
+            Account account = accountService.getAccount(idAsInt);
+            routingContext.response().setStatusCode(201)
+                    .putHeader("content-type", contentType)
+                    .end(Json.encodePrettily(account));
+
         } catch (AppException e) {
             routingContext.response().setStatusCode(500)
                     .putHeader("content-type", contentType)
@@ -107,6 +105,10 @@ public class MoneyTransfer extends AbstractVerticle {
             routingContext.response().setStatusCode(400)
                     .putHeader("content-type", contentType)
                     .end(Json.encodePrettily(new ErrorResponse(400, "Use number for account id")));
+        } catch (AccountNotFoundException ant) {
+            routingContext.response().setStatusCode(500)
+                    .putHeader("content-type", contentType)
+                    .end(Json.encodePrettily(new ErrorResponse(500, ant.getMessage())));
         }
     }
 
@@ -218,6 +220,7 @@ public class MoneyTransfer extends AbstractVerticle {
                             .end(Json.encodePrettily(new ErrorResponse(500, "Transfer could not be created.")));
                 }
             } catch (NotEnoughAccountBalanceException e) {
+                transferDAO.updateTransfer(transfer.getId(), TransferStatus.FAILED);
                 routingContext.response().setStatusCode(500)
                         .putHeader("content-type", contentType)
                         .end(Json.encodePrettily(new ErrorResponse(500, e.getMessage())));

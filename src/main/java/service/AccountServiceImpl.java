@@ -49,4 +49,13 @@ public class AccountServiceImpl implements AccountService {
             return false;
         }
     }
+
+    @Override
+    public Account getAccount(int id) throws AccountNotFoundException, AppException {
+        Account account = accountDAO.getAccount(id);
+        if(account == null) {
+            throw new AccountNotFoundException("Account was not found with id: " + id);
+        } else
+            return account;
+    }
 }
