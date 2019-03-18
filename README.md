@@ -13,7 +13,7 @@ mvn package exec:exec@run-app
 	<li>Vertx</li>
 	<li>H2 Database (in-memory)</li>
 	<li>Maven</li>
-</ul
+</ul>
 
 <h2>Transfer flow</h2>
 <ol>
@@ -31,46 +31,54 @@ Step 3. If deposit money on account transfering to failed, return reserved money
 
 <h2>End points</h2>
 
-=== GET/accounts - Get all accounts
+GET/accounts - Get all accounts
 
-=== GET/accounts/{id} - Get account with id
+GET/accounts/{id} - Get account with id
 
-=== POST/accounts - Create new account<br/>
-Request example: <br/>
+POST/accounts - Create new account
+
+```
+Request example:
 {
 	"name": "Ana",
 	"balance":"500.00",
 	"currency":"EUR"
-} <br/>
-Response example: <br/>
+}
+
+Response example: 
 {
     "id": 1,
     "name": "Ana",
     "balance": 500,
     "currency": "EUR"
 }
-
-=== PUT/accounts - Update balance on the account <br/>
-Request/Response example: <br/>
+```
+PUT/accounts - Update balance on the account 
+```
+Request/Response example: 
 {
     "id": 1,
     "name": "Jelena1",
     "balance": 1000,
     "currency": "EUR"
 }
+```
 
-=== GET/transfers - Get all transfers
+GET/transfers - Get all transfers
 
-=== GET/transfers/{id} - Get transfer with id
+GET/transfers/{id} - Get transfer with id
 
-=== POST/transfers - Create new transfer<br/>
+POST/transfers - Create new transfer
+
+```
 Request example:
 {
 	"fromId": 1,
 	"toId": 2,
 	"amount":50,
 	"transferStatus":"CREATED"
-} <br/>
+}
+
 Response example:
 {
     "id": 1,
@@ -79,9 +87,10 @@ Response example:
     "amount": 50,
     "transferStatus": "CREATED"
 }
-
+```
 PUT/transfers - Update transfer status <br/>
 Request/response example:
+```
 {
     "id": 6,
     "fromId": 1,
@@ -89,4 +98,5 @@ Request/response example:
     "amount": 5,
     "transferStatus": "FINISHED"
 }
+```
 
